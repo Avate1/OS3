@@ -4,33 +4,32 @@ import os
 import datetime
 import json
 
-# This gets the folder you are currently running the script from
-BASE_DIR = os.getcwd() 
+BASE_DIR = os.getcwd()
 IMAGE_DIR = os.path.join(BASE_DIR, "images")
 LOG_FILE = os.path.join(BASE_DIR, "logs", "camera.log")
+
+# Safety check: create folders if they don't exist
+os.makedirs(IMAGE_DIR, exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, "logs"), exist_ok=True)
 
 def capture():
     now = datetime.datetime.now(datetime.timezone.utc)
     time_string = now.strftime("%Y%m%dT%H%M%SZ")
     filename = f"RSO_{time_string}.jpg"
+    image_path = os.path.join(IMAGE_DIR, filename)
     
-    with open(LOG_FILE, "a") as f:
-        f.write(f"[{time_string}] Camera triggered. Simulating 2 second exposure...\n")
+    print(f"--- OS3 CAMERA TRIGGERED ---")
     
-    # Wait 2 seconds to simulate exposure
+    # --- REAL HARDWARE STUB ---
+    # When the Canon/Nikon camera arrives, you will uncomment this line:
+    # os.system(f"gphoto2 --capture-image-and-download --filename {image_path}")
+    
+    # --- MOCK HARDWARE (Current) ---
     time.sleep(2)
-    
-    # Create a fake image
-    with open(os.path.join(IMAGE_DIR, filename), "w") as f:
+    with open(image_path, "w") as f:
         f.write("THIS IS A FAKE IMAGE")
-        
-    with open(LOG_FILE, "a") as f:
-        f.write(f"[{time_string}] Success! Saved {filename}\n")
-
-    # Create JSON manifest
-    manifest = {"image_name": filename, "utc_time": time_string}
-    with open(os.path.join(IMAGE_DIR, f"manifest_{time_string}.json"), "w") as f:
-        json.dump(manifest, f, indent=4)
-
+    
+    print(f"Success! Created image: {image_path}")
+    
 if __name__ == "__main__":
     capture()

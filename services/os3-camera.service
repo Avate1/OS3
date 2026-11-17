@@ -1,0 +1,8 @@
+[Unit]
+Description=OS3 Camera Capture Service
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/pi/os3_software/bin/capture.py
+User=pi

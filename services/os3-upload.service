@@ -1,0 +1,11 @@
+[Unit]
+Description=OS3 Image Uploader Service
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/pi/os3_software/bin/upload.py
+User=pi
+
+[Install]
+WantedBy=multi-user.target
